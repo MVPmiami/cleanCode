@@ -27,6 +27,6 @@ public class BulletsShooter : MonoBehaviour
             newBullet.GetComponent<Rigidbody>().velocity = distance * _speed;
 
             yield return new WaitForSeconds(_shootingDelay);
-         }
+        }
     }
 }
