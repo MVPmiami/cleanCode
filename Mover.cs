@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    private float _speed;
+    [SerializeField] private Transform _pointContainer;
+    [SerializeField] private float _speed;
+
     private int _targetPlaceIndex;
     private Transform[] _places;
-    private Transform _placesPoint;
 
-    private void Start() {
-        _places = new Transform[_placesPoint.childCount];
+    private void Start() 
+    {
+        _places = new Transform[_pointContainer.childCount];
 
-        for (int i = 0; i < _placesPoint.childCount; i++)
-            _places[i] = _placesPoint.GetChild(i).GetComponent<Transform>();
+        for (int i = 0; i < _places.Length; i++)
+            _places[i] = _pointContainer.GetChild(i)
     }
-=
+
     private void Update()
     {
         var targetPlace = _places[_targetPlaceIndex];
@@ -23,18 +25,14 @@ public class Mover : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, targetPlace.position, _speed * Time.deltaTime);
 
         if (transform.position == targetPlace.position)
-            GetTargetPosition();
+            Move();
     }
 
-    private Vector3 GetTargetPosition(){
-        var targetPosition = _places[_targetPlaceIndex].transform.position;
+    private void Move()
+    {
+        Vector3 targetPosition = _places[_targetPlaceIndex].transform.position;
 
-        if (_targetPlaceIndex == _places.Length)
-            _targetPlaceIndex  = 0;
-
+        _targetPlaceIndex = _targetPlaceIndex++ % _places.Length;
         transform.forward = targetPosition - transform.position;
-        _targetPlaceIndex++;
-
-        return targetPosition;
     }
 }
