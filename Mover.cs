@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mover : MonoBehaviour
@@ -10,12 +8,12 @@ public class Mover : MonoBehaviour
     private int _targetPlaceIndex;
     private Transform[] _places;
 
-    private void Start() 
+    private void Start()
     {
         _places = new Transform[_pointContainer.childCount];
 
         for (int i = 0; i < _places.Length; i++)
-            _places[i] = _pointContainer.GetChild(i)
+            _places[i] = _pointContainer.GetChild(i);
     }
 
     private void Update()
@@ -23,16 +21,16 @@ public class Mover : MonoBehaviour
         var targetPlace = _places[_targetPlaceIndex];
 
         transform.position = Vector3.MoveTowards(transform.position, targetPlace.position, _speed * Time.deltaTime);
-
+        
         if (transform.position == targetPlace.position)
             Move();
     }
 
     private void Move()
     {
-        Vector3 targetPosition = _places[_targetPlaceIndex].transform.position;
+        _targetPlaceIndex++;
 
-        _targetPlaceIndex = _targetPlaceIndex++ % _places.Length;
-        transform.forward = targetPosition - transform.position;
+        if (_targetPlaceIndex == _pointContainer.childCount)
+            _targetPlaceIndex = 0;
     }
 }
